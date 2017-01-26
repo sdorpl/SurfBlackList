@@ -8,7 +8,7 @@ $domain = 'xtrasurf.pl';
 $sid = 'd9dcf7d28fc1ed695aeaaa3c7363c023';
 
 //Zgłaszam stronę do zbanowania. $_GET['url'] zastąpić zmienną z URL strony Opcjonalny parametr $reason - powód zgłoszenia strony do bana.
-$blacklist = CheckBlackList($_GET['url'], $reason, $domain, $sid);
+$blacklist = SendToBlackList($domain, $sid, $_GET['url'], $reason);
 
 //Przetwarzam wynik sprawdzania listy
 if($blacklist[0] == TRUE){

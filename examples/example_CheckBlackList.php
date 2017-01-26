@@ -8,7 +8,7 @@ $domain = 'xtrasurf.pl';
 $sid = 'd9dcf7d28fc1ed695aeaaa3c7363c023';
 
 //Pobieram listę zbanowanych stron i sprawdzam, $_GET['url'] zastąpić zmienną z formularza zawierającą URL strony.
-$blacklist = CheckBlackList($_GET['url'], $domain, $sid);
+$blacklist = CheckBlackList($domain, $sid, $_GET['url']);
 
 //Przetwarzam wynik sprawdzania listy
 if($blacklist[0] == TRUE){
