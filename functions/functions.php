@@ -76,7 +76,7 @@ function SendToBlackList($url, $reason = "nie podano", $domain, $sid)
 	
 	$blacklist = json_encode(file_get_contents('https://sdor.pl/json/json.php?r=send&domain='.$domain.'&sid='.$sid.'&url='.$u.'&reason='.$reason), true);
 
-	//Przetwarzam wynik sprawdzania listy
+	//Przetwarzam wynik dodawania strony
 	if($blacklist[0]['result'] == 'TRUE')
 	{
 		//Komunikat z info, że strona ma bana. $blacklist[0]['reason'] zawiera powód bana.
