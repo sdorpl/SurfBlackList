@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?php
 
 function CheckBlackList($url, $domain, $sid)
