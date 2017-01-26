@@ -4,8 +4,8 @@ define('BASE_PATH', realpath(dirname(__FILE__)));
 include(BASE_PATH.'/include/functions.php');
 
 //Ustalam domenę i secret_id - aby uzyskać napisz maila: admin[at]xtrasurf.pl
-$domain = 'xtrasurf.pl';
-$sid = 'd9dcf7d28fc1ed695aeaaa3c7363c023';
+$domain = 'domena.pl';
+$sid = 'secretid';
 
 //Pobieram listę zbanowanych stron i sprawdzam, $_GET['url'] zastąpić zmienną z formularza zawierającą URL strony.
 $blacklist = CheckBlackList($domain, $sid, $_GET['url']);
