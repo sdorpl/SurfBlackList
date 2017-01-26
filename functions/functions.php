@@ -27,7 +27,7 @@ function CheckBlackList($domain, $sid, $url)
 		}
 	}
 	
-	$blacklist = json_decode(file_get_contents('https://sdor.pl/json/json.php?r=check&domain='.$domain.'&sid='.$sid.'&url='.$u), true);
+	$blacklist = json_decode(file_get_contents('https://api.surfblacklist.tk/?r=check&domain='.$domain.'&sid='.$sid.'&url='.$u), true);
 
 	//Przetwarzam wynik sprawdzania listy
 	if($blacklist[0]['result'] == 'TRUE')
@@ -73,7 +73,7 @@ function SendToBlackList($domain, $sid, $url, $reason = null)
 		}
 	}
 	
-	$blacklist = json_decode(file_get_contents('https://sdor.pl/json/json.php?r=send&domain='.$domain.'&sid='.$sid.'&url='.$u.'&reason='.$reason), true);
+	$blacklist = json_decode(file_get_contents('https://api.surfblacklist.tk/?r=send&domain='.$domain.'&sid='.$sid.'&url='.$u.'&reason='.$reason), true);
 	
 	//Przetwarzam wynik sprawdzania listy
 	if($blacklist[0]['result'] == 'TRUE')
