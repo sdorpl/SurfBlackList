@@ -11,13 +11,14 @@ Po otrzymaniu dostępu użyj poniższych funkcji aby wdrożyć system.
     - $sid: Secret_id nadany twojej domenie,
     - $url: Adres URL strony, która ma być sprawdzona czy jest na liście.
 
-  - SendToBlackList($domain, $sid, $url); Wysyła stronę do listy zbanowanych. Wymagane argumenty:
-    - $domain: domena twojego surfa/ptp
-    - $sid: Secret_id nadany twojej domenie,
-    - $url: Adres URL strony, która ma być sprawdzona czy jest na liście.
-    - $reason: Powód zbanowania (opcjonalne).    
 
-    - ReportToBlackList($domain, $sid, $url); Wysyła stronę do listy zbanowanych. Wymagane argumenty:
+  - SendToBlackList($domain, $sid, $url); Wysyła stronę do listy zbanowanych. Wymagane argumenty:
+      - $domain: domena twojego surfa/ptp
+      - $sid: Secret_id nadany twojej domenie,
+      - $url: Adres URL strony, która ma być sprawdzona czy jest na liście.
+      - $reason: Powód zbanowania (opcjonalne).    
+
+  - ReportToBlackList($domain, $sid, $url); Wysyła stronę do listy zbanowanych. Wymagane argumenty:
       - $domain: domena twojego surfa/ptp
       - $sid: Secret_id nadany twojej domenie,
       - $url: Adres URL strony, która ma być sprawdzona czy jest na liście.
