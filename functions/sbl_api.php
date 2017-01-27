@@ -1,7 +1,6 @@
 <?php
 
-/* Przetwarzam URL */
-function ParseURL($url)
+function CheckBlackList($domain, $sid, $url)
 {
 	$urlParsed = parse_url($url);
 
@@ -9,33 +8,25 @@ function ParseURL($url)
 	{
 		if(empty($urlParsed["scheme"])) 
 		{
-			return  $urlParsed['path'];
+			$u = $urlParsed['path'];
 		} 
 		else 
 		{
-			if(empty($urlParsed['path']))
-			{
-				$urlParsed['path']='';
-			}
-			return  $urlParsed['host'].$urlParsed['path'];
+			$u = $urlParsed['host'].$urlParsed['path'];
 		}
 	} 
 	else 
 	{
 		if(empty($urlParsed["scheme"])) 
 		{
-			return  $urlParsed['path'].'/?'.$urlParsed['query'];
+			$u = $urlParsed['path'].'/?'.$urlParsed['query'];
 		} 
 		else 
 		{
-			return  $urlParsed['host'].$urlParsed['path'].'/?'.$urlParsed['query'];
+			$u = $urlParsed['host'].$urlParsed['path'].'/?'.$urlParsed['query'];
 		}
-	}	
-}
-
-function CheckBlackList($domain, $sid, $url)
-{
-	$u = ParseURL($url);
+	}
+	
 	$blacklist = json_decode(file_get_contents('https://api.surfblacklist.tk/?r=check&domain='.$domain.'&sid='.$sid.'&url='.$u), true);
 
 	//Przetwarzam wynik sprawdzania listy
@@ -64,7 +55,30 @@ function CheckBlackList($domain, $sid, $url)
 
 function SendToBlackList($domain, $sid, $url, $reason = null)
 {
-	$u = ParseURL($url);
+	$urlParsed = parse_url($url);
+
+	if(empty($urlParsed["query"])) 
+	{
+		if(empty($urlParsed["scheme"])) 
+		{
+			$u = $urlParsed['path'];
+		} 
+		else 
+		{
+			$u = $urlParsed['host'].$urlParsed['path'];
+		}
+	} 
+	else 
+	{
+		if(empty($urlParsed["scheme"])) 
+		{
+			$u = $urlParsed['path'].'/?'.$urlParsed['query'];
+		} 
+		else 
+		{
+			$u = $urlParsed['host'].$urlParsed['path'].'/?'.$urlParsed['query'];
+		}
+	}
 	
 	$blacklist = json_decode(file_get_contents('https://api.surfblacklist.tk/?r=send&domain='.$domain.'&sid='.$sid.'&url='.$u.'&reason='.$reason), true);
 	
