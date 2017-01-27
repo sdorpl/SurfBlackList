@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 /* Przetwarzam URL */
 function ParseURL($url)
@@ -36,52 +39,86 @@ function ParseURL($url)
 function CheckBlackList($domain, $sid, $url)
 {
 	$u = ParseURL($url);
-	$blacklist = json_decode(file_get_contents('https://api.surfblacklist.tk/?r=check&domain='.$domain.'&sid='.$sid.'&url='.$u), true);
+	$blacklist = json_decode(file_get_contents('https://api.surfblacklist.tk/?r=checkbl&domain='.$domain.'&sid='.$sid.'&url='.$u), true);
 
 	//Przetwarzam wynik sprawdzania listy
 	if($blacklist[0]['result'] == 'TRUE')
 	{
-		//Komunikat z info, że strona ma bana. $blacklist[0]['reason'] zawiera powód bana.
+		//Komunikat z info, że strona ma bana. $reason zawiera powód bana.
 		$result = 'true';
+		$respond = $blacklist[0]['respond'];
 		$reason = $blacklist[0]['reason'];
-		return array($result, $reason);
+		return array($result, $respond, $reason);
 	}
 	elseif($blacklist[0]['result'] == 'UNBANNED')
 	{
-		//Skrypt dodający stronę do bazy. Strana nie ma bana i może być dodana do surfa i/lub ptp.
+		//Komunikat z info, że strona została oznaczona w systemie jako odbanowana.
 		$result = 'unbanned';
-		$reason = '';
-		return array($result, $reason);
+		$respond = $blacklist[0]['respond'];
+		return array($result, $respond);
 	}
 	elseif($blacklist[0]['result'] == 'FALSE')
 	{
 		//Skrypt dodający stronę do bazy. Strana nie ma bana i może być dodana do surfa i/lub ptp.
 		$result = 'false';
-		$reason = '';
-		return array($result, $reason);
+		$respond = $blacklist[0]['respond'];
+		return array($result, $respond);
 	}
 }
 
 function SendToBlackList($domain, $sid, $url, $reason = null)
 {
 	$u = ParseURL($url);
+
+	if ($reason = null)
+	{
+		$reason = ' ';
+	}
 	
-	$blacklist = json_decode(file_get_contents('https://api.surfblacklist.tk/?r=send&domain='.$domain.'&sid='.$sid.'&url='.$u.'&reason='.$reason), true);
+	$blacklist = json_decode(file_get_contents('https://api.surfblacklist.tk/?r=sendtobl&domain='.$domain.'&sid='.$sid.'&url='.$u.'&reason='.$reason), true);
 	
-	//Przetwarzam wynik sprawdzania listy
+	//Przetwarzam wynik zapytania
 	if($blacklist[0]['result'] == 'TRUE')
 	{
-		//Komunikat z info, że strona ma bana. $blacklist[0]['reason'] zawiera powód bana.
+		//Komunikat z info, że strona została zbanowana.
 		$result = 'true';
-		$reason = $blacklist[0]['reason'];
-		return array($result, $reason);
+		$respond = $blacklist[0]['respond'];
+		return array($result, $respond);
 	} 
 	elseif($blacklist[0]['result'] == 'FALSE')
 	{
-		//Skrypt dodający stronę do bazy. Strana nie ma bana i może być dodana do surfa i/lub ptp.
+		//Komunikat z info, że strona ma już bana.
 		$result = 'false';
-		$reason = $blacklist[0]['reason'];
-		return array($result, $reason);
+		$respond = $blacklist[0]['respond'];
+		return array($result, $respond);
+	}
+}
+
+function ReportToBlackList($domain, $sid, $url, $reason = null)
+{
+	$u = ParseURL($url);
+	
+	if ($reason = null)
+	{
+		$reason = ' ';
+	}
+	
+	$blacklist = json_decode(file_get_contents('https://api.surfblacklist.tk/?r=reptobl&domain='.$domain.'&sid='.$sid.'&url='.$u.'&reason='.$reason), true);
+	
+	//Przetwarzam wynik zapytania
+	if($blacklist[0]['result'] == 'TRUE')
+	{
+		//Komunikat z info, że strona została zgłoszona do sprawdzenia.
+		$result = 'true';
+		$respond = $blacklist[0]['respond'];
+		return array($result, $respond);
+	} 
+	elseif($blacklist[0]['result'] == 'FALSE')
+	{
+		//Komunikat z info, że strona nie może być zgłoszona - została zgłoszona lub już jest zbanowana.
+		$result = 'false';
+		$respond = $blacklist[0]['respond'];
+		return array($result, $respond);
 	}
 }
 
